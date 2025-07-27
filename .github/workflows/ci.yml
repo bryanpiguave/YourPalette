@@ -1,0 +1,71 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python 3.13.5
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.13.5
+    
+    - name: Install Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        auto-update-conda: true
+        python-version: 3.13.5
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1
+    
+    - name: Create conda environment from environment.yaml
+      run: |
+        conda env create -f environment.yaml
+        conda activate palette
+    
+    - name: Install additional dependencies
+      run: |
+        conda activate palette
+        pip install pytest pytest-flask flake8 gunicorn
+    
+    - name: Run tests
+      run: |
+        conda activate palette
+        python -m pytest tests/ -v
+    
+    - name: Run linting
+      run: |
+        conda activate palette
+        flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+  build-docker:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Docker image
+      run: |
+        docker build -t yourpalette:${{ github.sha }} .
+    
+    - name: Test Docker image
+      run: |
+        docker run -d --name test-container -p 8080:8080 yourpalette:${{ github.sha }}
+        sleep 10
+        curl -f http://localhost:8080/ || exit 1
+        docker stop test-container
+        docker rm test-container 
