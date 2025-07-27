@@ -47,20 +47,6 @@ mamba env create -f environment.yml
 conda activate yourpalette
 ```
 
-### Method 2: Using pip
-
-```bash
-# Clone the repository
-git clone git@github.com:bryanpiguave/YourPalette.git
-cd yourpalette
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run the application
-python app/views.py
-```
-
 ### Method 3: Using Docker
 
 ```bash
@@ -72,17 +58,6 @@ cd yourpalette
 docker-compose up --build
 ```
 
-### Method 4: Automated Installation
-
-**Linux/macOS:**
-```bash
-chmod +x install.sh && ./install.sh
-```
-
-**Windows:**
-```cmd
-install.bat
-```
 
 ## 🌐 Usage
 
@@ -232,11 +207,9 @@ For more detailed troubleshooting, see [INSTALL.md](INSTALL.md).
 
 ## 📞 Support
 
-- 📧 Email: your.email@example.com
+- 📧 Email: bpiguave@nd.edu
 - 🐛 Issues: [GitHub Issues](https://github.com/yourusername/yourpalette/issues)
 - 📖 Documentation: [INSTALL.md](INSTALL.md)
 
----
 
-Made with ❤️ and lots of 🎨
 
