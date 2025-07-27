@@ -24,16 +24,10 @@ jobs:
         auto-update-conda: true
         python-version: 3.13.5
     
-    - name: Create conda environment from environment.yaml
+    - name: Create conda environment from environment-ci.yml
       run: |
-        conda env create -f environment.yaml
+        conda env create -f environment-ci.yml
         conda activate palette
-    
-    - name: Install additional dependencies
-      run: |
-        conda activate palette
-        # Install testing dependencies via pip to avoid conda conflicts
-        pip install pytest pytest-flask flake8 gunicorn
     
     - name: Run tests
       run: |
