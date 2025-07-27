@@ -32,6 +32,8 @@ jobs:
     - name: Install additional dependencies
       run: |
         conda activate palette
+        conda install -c conda-forge flask numpy scikit-learn matplotlib scipy pillow
+        conda install -c conda-forge opencv-python
         pip install pytest pytest-flask flake8 gunicorn
     
     - name: Run tests
