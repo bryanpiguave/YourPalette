@@ -27,18 +27,15 @@ jobs:
     - name: Create conda environment from environment-ci.yml
       run: |
         conda env create -f environment-ci.yml
-        conda activate palette
     
     - name: Run tests
       run: |
-        conda activate palette
-        python -m pytest tests/ -v
+        conda run -n palette python -m pytest tests/ -v
     
     - name: Run linting
       run: |
-        conda activate palette
-        flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        conda run -n palette flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        conda run -n palette flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
   build-docker:
     needs: test
