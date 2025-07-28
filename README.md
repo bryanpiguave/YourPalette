@@ -24,11 +24,13 @@ cd yourpalette
 
 # Create and activate conda environment
 conda env create -f environment.yml
-conda activate yourpalette
+conda activate palette
 
 # Run the application
 python app/views.py
 ```
+
+**Note**: Use `environment.yml` for local development. For CI/CD, use `environment-ci.yml`.
 
 **Note**: If you encounter issues with conda, try these alternative approaches:
 
